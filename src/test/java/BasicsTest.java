@@ -41,7 +41,12 @@ public class BasicsTest {
 
        page.navigate("https://eventhub.rahulshettyacademy.com/admin/events");
        page.locator("#event-title-input").fill("QA Summit");
-
+       page.locator("#admin-event-form textarea").fill("Test Event");
+       page.getByLabel("Category").selectOption("Concert");
+       page.getByLabel("City").fill("Kolkata");
+       page.getByLabel("Venue").fill("Test Venue");
+       page.getByLabel("Event Date & Time").fill("2026-12-10T08:00");
+       page.waitForTimeout(6000);
        //page.pause();
 
     }

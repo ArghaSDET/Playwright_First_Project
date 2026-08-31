@@ -1,8 +1,6 @@
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.BrowserType;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.AriaRole;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -40,14 +38,32 @@ public class BasicsTest {
        assertThat(page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Browse Events →"))).isVisible();
 
        page.navigate("https://eventhub.rahulshettyacademy.com/admin/events");
-       page.locator("#event-title-input").fill("QA Summit");
+       page.locator("#event-title-input").fill("Test 7");
        page.locator("#admin-event-form textarea").fill("Test Event");
        page.getByLabel("Category").selectOption("Concert");
        page.getByLabel("City").fill("Kolkata");
        page.getByLabel("Venue").fill("Test Venue");
        page.getByLabel("Event Date & Time").fill("2026-12-10T08:00");
-       page.waitForTimeout(6000);
+       //page.waitForTimeout(6000);
        //page.pause();
+
+       page.getByLabel("Price ($)").fill("100");
+       page.getByLabel("Total Seats").fill("1000");
+       page.locator("#add-event-btn").click();
+
+       assertThat(page.getByText("Event created!")).isVisible();
+       page.locator("#nav-events").click();
+       // page.waitForTimeout(2000);
+       Locator eventCards = page.getByTestId("event-card");
+       System.out.println(eventCards.count());
+       Locator targetCard = eventCards.filter(new Locator.FilterOptions().setHasText("Test 3"));
+       assertThat(targetCard).isVisible();
+
+
+
+
+
+
 
     }
 

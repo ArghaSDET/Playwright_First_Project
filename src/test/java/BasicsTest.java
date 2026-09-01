@@ -1,4 +1,6 @@
 import com.microsoft.playwright.*;
+import com.microsoft.playwright.assertions.LocatorAssertions;
+import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.microsoft.playwright.options.AriaRole;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -23,6 +25,8 @@ public class BasicsTest {
         browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false));
         page = browser.newPage();
         page.navigate("https://eventhub.rahulshettyacademy.com/");
+        page.setDefaultTimeout(8000); //Set Global Default Timeout //Default timeout is 5 Second
+        PlaywrightAssertions.setDefaultAssertionTimeout(7000); //Set Global Assertion Default Timeout //Default timeout is 10 Second
     }
 
     @Test(description = "Create Event")
@@ -38,7 +42,7 @@ public class BasicsTest {
        assertThat(page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Browse Events →"))).isVisible();
 
        page.navigate("https://eventhub.rahulshettyacademy.com/admin/events");
-       page.locator("#event-title-input").fill("Test 7");
+       page.locator("#event-title-input").fill("Test 9");
        page.locator("#admin-event-form textarea").fill("Test Event");
        page.getByLabel("Category").selectOption("Concert");
        page.getByLabel("City").fill("Kolkata");
@@ -47,19 +51,21 @@ public class BasicsTest {
        //page.waitForTimeout(6000);
        //page.pause();
 
-       page.getByLabel("Price ($)").fill("100");
+       page.getByLabel("Price ($)").fill("100", new Locator.FillOptions().setTimeout(10000)); //Set timeout for this particular locator action
        page.getByLabel("Total Seats").fill("1000");
-       page.locator("#add-event-btn").click();
+       page.locator("#add-event-btn").click(new Locator.ClickOptions().setTimeout(12000)); //Set timeout for this particular locator action
 
        assertThat(page.getByText("Event created!")).isVisible();
        page.locator("#nav-events").click();
-       // page.waitForTimeout(2000);
+       //page.waitForTimeout(2000);
        Locator eventCards = page.getByTestId("event-card");
+       assertThat(eventCards.first()).isVisible();
+
        System.out.println(eventCards.count());
-       Locator targetCard = eventCards.filter(new Locator.FilterOptions().setHasText("Test 3"));
-       assertThat(targetCard).isVisible();
-
-
+       Locator targetCard = eventCards.filter(new Locator.FilterOptions().setHasText("Test 9"));
+       assertThat(targetCard).isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(10000)); //Set timeout for this particular locator assertion
+       String seatsText = targetCard.getByText("seats").innerText();
+       System.out.println(seatsText);
 
 
 

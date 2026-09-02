@@ -25,7 +25,7 @@ public class BasicsTest {
         browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false));
         page = browser.newPage();
         page.navigate("https://eventhub.rahulshettyacademy.com/");
-        page.setDefaultTimeout(8000); //Set Global Default Timeout //Default timeout is 5 Second
+        page.setDefaultTimeout(5000); //Set Global Default Timeout //Default timeout is 5 Second
         PlaywrightAssertions.setDefaultAssertionTimeout(7000); //Set Global Assertion Default Timeout //Default timeout is 10 Second
     }
 
@@ -66,6 +66,19 @@ public class BasicsTest {
        assertThat(targetCard).isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(10000)); //Set timeout for this particular locator assertion
        String seatsText = targetCard.getByText("seats").innerText();
        System.out.println(seatsText);
+
+       targetCard.getByTestId("book-now-btn").click();
+       page.getByLabel("Full Name").fill("Argha Ghosh");
+       page.getByPlaceholder("you@email.com").fill("argha.testing@gmail.com");
+       page.getByPlaceholder("+91 98765 43210").fill("+91 9000000000");
+
+       page.locator("#confirm-booking").click();
+
+
+       //Confirm Booking
+       assertThat(page.getByText("Your tickets are reserved.")).isVisible();
+       String bookingRef = page.locator(".booking-ref").innerText();
+       page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("View My Bookings")).click();
 
 
 

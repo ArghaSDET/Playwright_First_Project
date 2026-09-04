@@ -81,6 +81,18 @@ public class BasicsTest {
        page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("View My Bookings")).click();
 
 
+       Locator bookingCard = page.locator("#booking-card");
+       Locator targetBookingCard = bookingCard.filter(new Locator.FilterOptions().setHasText(bookingRef));
+       assertThat(targetBookingCard).isVisible();
+
+        page.locator("#nav-events").click();
+        //page.waitForTimeout(2000);
+        Locator eventCardsAfterBooking = page.getByTestId("event-card");
+
+        Locator targetCardAfterBooking = eventCardsAfterBooking.filter(new Locator.FilterOptions().setHasText("Test 9"));
+
+        String seatsTextAfterBooking = targetCardAfterBooking.getByText("seats").innerText();
+        System.out.println(seatsTextAfterBooking);
 
 
 

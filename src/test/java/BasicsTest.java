@@ -65,7 +65,9 @@ public class BasicsTest {
        Locator targetCard = eventCards.filter(new Locator.FilterOptions().setHasText("Test 9"));
        assertThat(targetCard).isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(10000)); //Set timeout for this particular locator assertion
        String seatsText = targetCard.getByText("seats").innerText();
-       System.out.println(seatsText);
+
+        System.out.println(seatsText);
+        int seatsNumBeforeBooking = Integer.parseInt(seatsText.split(" ")[0]);
 
        targetCard.getByTestId("book-now-btn").click();
        page.getByLabel("Full Name").fill("Argha Ghosh");
@@ -86,7 +88,7 @@ public class BasicsTest {
        assertThat(targetBookingCard).isVisible();
 
         page.locator("#nav-events").click();
-        //page.waitForTimeout(2000);
+        page.waitForTimeout(2000);
         Locator eventCardsAfterBooking = page.getByTestId("event-card");
 
         Locator targetCardAfterBooking = eventCardsAfterBooking.filter(new Locator.FilterOptions().setHasText("Test 9"));
@@ -94,8 +96,9 @@ public class BasicsTest {
         String seatsTextAfterBooking = targetCardAfterBooking.getByText("seats").innerText();
         System.out.println(seatsTextAfterBooking);
 
+        int seatsNumAfterBooking = Integer.parseInt(seatsTextAfterBooking.split(" ")[0]);
 
-
+        Assert.assertTrue(seatsNumBeforeBooking>seatsNumAfterBooking);
     }
 
     @AfterMethod

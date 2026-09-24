@@ -35,10 +35,12 @@ public class BasicsTest {
        System.out.println(page.title());
        assertThat(page).hasTitle("EventHub — Discover & Book Events");
 
+       //Login/SignIn
        page.getByPlaceholder("you@email.com").fill("argha.testing@gmail.com");
        page.getByLabel("Password").fill("Argha@1234");
        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Sign In")).click();
 
+       //Create Event
        assertThat(page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Browse Events →"))).isVisible();
 
        page.navigate("https://eventhub.rahulshettyacademy.com/admin/events");
@@ -56,6 +58,8 @@ public class BasicsTest {
        page.locator("#add-event-btn").click(new Locator.ClickOptions().setTimeout(12000)); //Set timeout for this particular locator action
 
        assertThat(page.getByText("Event created!")).isVisible();
+
+       //Checking -> Event Page to see latest Data
        page.locator("#nav-events").click();
        //page.waitForTimeout(2000);
        Locator eventCards = page.getByTestId("event-card");
@@ -66,9 +70,10 @@ public class BasicsTest {
        assertThat(targetCard).isVisible(new LocatorAssertions.IsVisibleOptions().setTimeout(10000)); //Set timeout for this particular locator assertion
        String seatsText = targetCard.getByText("seats").innerText();
 
-        System.out.println(seatsText);
-        int seatsNumBeforeBooking = Integer.parseInt(seatsText.split(" ")[0]);
+       System.out.println(seatsText);
+       int seatsNumBeforeBooking = Integer.parseInt(seatsText.split(" ")[0]);
 
+       //Proceed for Booking
        targetCard.getByTestId("book-now-btn").click();
        page.getByLabel("Full Name").fill("Argha Ghosh");
        page.getByPlaceholder("you@email.com").fill("argha.testing@gmail.com");

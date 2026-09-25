@@ -14,10 +14,13 @@ public class MoreUIValidatiosTest {
     @BeforeMethod
     public void setup(){
         playwright = Playwright.create();
-        browser = playwright.chromium().launch();
-        BrowserContext context = browser.newContext();
-        page = browser.newPage();
+        //browser = playwright.chromium().launch();
+        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false));
+
+        context = browser.newContext();
+        page = context.newPage();
         page.navigate("https://rahulshettyacademy.com/loginpagePractise/");
+        page.waitForTimeout(2000);
 
 //        BrowserContext contextB = browser.newContext();
 //        pageB = contextB.newPage();
@@ -28,10 +31,10 @@ public class MoreUIValidatiosTest {
         Locator blinkingTexts = page.locator(".blinkingText");
         Page newPage = context.waitForPage(()-> blinkingTexts.first().click());
         newPage.waitForLoadState();
-        String childText = newPage.locator(".blinkingText").textContent();
+        String childText = newPage.locator(".red").textContent();
+        System.out.println(childText);
         String emailId = childText.split("at ")[1].split(" ")[0];
         page.getByLabel("Username:").fill(emailId);
-        page.waitForTimeout(2000);
         System.out.println(page.getByLabel("Username: ").inputValue());
     }
 }

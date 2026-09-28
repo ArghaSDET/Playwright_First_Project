@@ -1,8 +1,10 @@
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.nio.file.Paths;
 import java.util.SplittableRandom;
 
 public class MoreUIValidatiosTest {
@@ -16,16 +18,25 @@ public class MoreUIValidatiosTest {
         playwright = Playwright.create();
         //browser = playwright.chromium().launch();
         browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false));
-
         context = browser.newContext();
+        context.tracing().start(new Tracing.StartOptions()
+                .setScreenshots(true)
+                .setSnapshots(true)
+                .setSources(true));
         page = context.newPage();
         page.navigate("https://rahulshettyacademy.com/loginpagePractise/");
-        page.waitForTimeout(2000);
+        //page.waitForTimeout(2000);
 
 //        BrowserContext contextB = browser.newContext();
 //        pageB = contextB.newPage();
     }
 
+
+    @AfterMethod
+    public void tearDown(){
+        context.tracing().stop(new Tracing.StopOptions()
+                .setPath(Paths.get("trace.zip")));
+    }
     @Test
     public void ChildWindowHandle(){
         Locator blinkingTexts = page.locator(".blinkingText");

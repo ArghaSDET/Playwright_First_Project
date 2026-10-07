@@ -1,11 +1,16 @@
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
+import com.microsoft.playwright.options.AriaRole;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.nio.file.Paths;
+import java.security.PublicKey;
 import java.util.SplittableRandom;
+
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class MoreUIValidatiosTest {
     Playwright playwright;
@@ -37,7 +42,7 @@ public class MoreUIValidatiosTest {
         context.tracing().stop(new Tracing.StopOptions()
                 .setPath(Paths.get("trace.zip")));
     }
-    @Test
+   /* @Test
     public void ChildWindowHandle(){
         Locator blinkingTexts = page.locator(".blinkingText");
         Page newPage = context.waitForPage(()-> blinkingTexts.first().click());
@@ -47,5 +52,19 @@ public class MoreUIValidatiosTest {
         String emailId = childText.split("at ")[1].split(" ")[0];
         page.getByLabel("Username:").fill(emailId);
         System.out.println(page.getByLabel("Username: ").inputValue());
+    }*/
+    @Test
+    public void UIControls(){
+        Locator userRdBtn = page.getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName("User"));
+        userRdBtn.click();
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Okay")).click();
+        userRdBtn.isChecked();
+
+        Locator checkBoxTerms = page.getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName("I Agree to the terms and conditions"));
+        checkBoxTerms.check();
+        Assert.assertTrue(checkBoxTerms.isChecked());
+
+        page.getByRole(AriaRole.COMBOBOX).selectOption("Teacher");
+        page.waitForTimeout(3000);
     }
 }

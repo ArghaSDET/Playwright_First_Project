@@ -51,9 +51,7 @@ public class UIValidationContinuedTest {
         assertThat(page.getByPlaceholder("Hide/Show Example")).isHidden();
         page.onDialog(dialog -> dialog.accept());
         page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Alert")).click();
-
         page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Mouse Hover")).hover();
-
         page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Top")).click();
     }
 

@@ -52,7 +52,21 @@ public class UIValidationContinuedTest {
         page.onDialog(dialog -> dialog.accept());
         page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Alert")).click();
         page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Mouse Hover")).hover();
-        page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Top")).click();
+        //page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Top")).click();
+
+        FrameLocator framesPage = page.frameLocator("#courses-iframe");
+        framesPage.getByRole(AriaRole.LINK, new FrameLocator.GetByRoleOptions().setName("Learning paths")).click();
+        String textCheck = framesPage.locator(".inner-box h1").textContent();
+        System.out.println(textCheck);
+
+    }
+    @Test
+    public void screenShotTest(){
+       page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("pagescreenshot.png")));
+       Locator displayEditBox = page.getByPlaceholder("Hide/Show Example");
+       displayEditBox.screenshot(new Locator.ScreenshotOptions().setPath(Paths.get("editboxscreenshot.png")));
+       page.locator("#hide-textbox").click();
+       page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("pagePostscreenshot.png")));
     }
 
 }

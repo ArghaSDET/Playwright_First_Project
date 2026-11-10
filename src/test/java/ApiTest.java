@@ -34,7 +34,7 @@ public class ApiTest {
         createEventPayload.put("category","Conference");
         createEventPayload.put("city","Kolkata");
         createEventPayload.put("description","TEST Description");
-        createEventPayload.put("eventDate","2026-10-24T05:58:00.000Z");
+        createEventPayload.put("eventDate","2027-10-24T05:58:00.000Z");
         createEventPayload.put("price","1000");
         createEventPayload.put("title","TEST Title");
         createEventPayload.put("totalSeats","500");
